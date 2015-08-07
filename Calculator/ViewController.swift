@@ -87,7 +87,6 @@ class ViewController: UIViewController {
 //    var operandStack = Array<Double>()
     @IBAction func enter() {
         userIsInTheMiddleOfTypingANumber = false
-        println("nnnmm")
         if let result = brain.pushOperrand(displayValue) {
             displayValue = result
             println("displayValue=\(displayValue)")

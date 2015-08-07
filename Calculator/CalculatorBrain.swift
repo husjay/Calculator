@@ -32,13 +32,15 @@ class CalculatorBrain {
     }
     
     private func evaluate(ops: [Op]) -> (result: Double?, remainingOps:[Op]) {
-        if ops.isEmpty {
+        if !ops.isEmpty {
             var remainingOps = ops
             let op = remainingOps.removeLast()
+            println("evaluate")
             switch op {
             //case Op.Operand(<#Double#>):
             //let operate表示用operate获得值
             case .Operand(let operand):
+                println("operand=\(operand)")
                 return (operand, remainingOps)
                 //下划线表示“我不关心这个
             case .UnaryOperation(_, let operation):
@@ -60,14 +62,16 @@ class CalculatorBrain {
     }
     
     func evaluate() -> Double? {
-        let (result, remainder) = evaluate(opStack)
+        let (result, remainder) : (Double?, [Op]) = evaluate(opStack)
+        //let res = evaluate(opStack)
+        println("result=\(result)")
         return result
     }
     
     //将操作放入栈中
     func pushOperrand(operand: Double) -> Double? {
         opStack.append(Op.Operand(operand))
-        println("operand=\(operand)")
+        //println("operand=\(operand)")
         return evaluate()
     }
     
