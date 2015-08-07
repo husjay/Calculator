@@ -13,6 +13,8 @@ class ViewController: UIViewController {
     @IBOutlet weak var display: UILabel!
     
     var userIsInTheMiddleOfTypingANumber: Bool = false
+    
+    var brain = CalculatorBrain()
 
     //从数字键盘中获取数字，并显示在UILabel变量display中
     @IBAction func appendDigit(sender: UIButton) {
@@ -28,10 +30,17 @@ class ViewController: UIViewController {
 
     //定义函数，用于点击＋、—、＊、／符号时的事件处理
     @IBAction func operate(sender: UIButton) {
-        let operation = sender.currentTitle!
         if userIsInTheMiddleOfTypingANumber {
             enter()
         }
+        if let operation = sender.currentTitle {
+            if let result = brain.performOperation(operation) {
+                displayValue = result;
+            } else {
+                displayValue = 0
+            }
+        }
+        /*
         switch operation {
         //swift支持直接传递函数
         case "×": performOperation(multiply)
@@ -51,9 +60,9 @@ class ViewController: UIViewController {
         case "÷": performOperation { $1 / $0 }
         case "√": performOperation { sqrt($0) }
         default:break
-        }
+        }*/
     }
-    
+/*
     //定义函数，函数的参数是另一个函数，括号中是函数的参数类型，箭头后是返回值类型
     func performOperation(operation: (Double, Double) -> Double) {
         if operandStack.count >= 2 {
@@ -72,14 +81,22 @@ class ViewController: UIViewController {
     func multiply(op1: Double, op2: Double) -> Double {
         return op1 * op2
     }
-    
+*/
     //按下enter键，读取用户输入的数据到数组operandStack中
     //var operandStack : Array<Double> = Array<Double>()
-    var operandStack = Array<Double>()
+//    var operandStack = Array<Double>()
     @IBAction func enter() {
         userIsInTheMiddleOfTypingANumber = false
-        operandStack.append(displayValue)
-        println("operandStack=\(operandStack)")
+        println("nnnmm")
+        if let result = brain.pushOperrand(displayValue) {
+            displayValue = result
+            println("displayValue=\(displayValue)")
+        } else {
+            displayValue = 0
+        }
+        
+//        operandStack.append(displayValue)
+//        println("operandStack=\(operandStack)")
     }
     
     var displayValue : Double {
@@ -88,7 +105,7 @@ class ViewController: UIViewController {
         }
         set{
             display.text = "\(newValue)"
-            userIsInTheMiddleOfTypingANumber = false
+            //userIsInTheMiddleOfTypingANumber = false
         }
     }
 }
